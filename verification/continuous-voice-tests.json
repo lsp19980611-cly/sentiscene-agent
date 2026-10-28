@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-28T07:57:53.029Z",
+  "browser": "Chrome headless",
+  "microphone": "Web Audio injected Chinese WAV; real local Silero inference; not physical microphone",
+  "checks": [
+    "Local Silero detects Chinese speech and silence; sends first utterance automatically",
+    "Second utterance interrupts response without another click",
+    "Two automatic voice turns share one microphone session",
+    "End conversation stops tracks and playback",
+    "Permission result arriving after stop is discarded and tracks released",
+    "Backgrounding page releases persistent microphone",
+    "390px Mira mobile layout has no horizontal overflow",
+    "Permission denial retains working text conversation"
+  ],
+  "errors": []
+}

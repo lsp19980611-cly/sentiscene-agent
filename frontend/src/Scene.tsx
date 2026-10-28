@@ -1,0 +1,43 @@
+export default function Scene({state,emotion,action,clear,failed}:{state:string;emotion:string;action:string;clear:boolean;failed:boolean}) {
+return <div className={`world ${clear?'clear':''} ${failed?'static':''}`} aria-label={`咖啡馆场景，${clear?'雨后微光':'窗外下雨'}，Mira ${emotion==='happy'?'微笑':emotion==='worried'?'担忧':'平静'}`}>
+<svg className="cafe-art" viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+<defs>
+ <linearGradient id="wall" x2="0" y2="1"><stop stopColor="#243b37"/><stop offset="1" stopColor="#101f1c"/></linearGradient>
+ <linearGradient id="night" x2="0" y2="1"><stop stopColor={clear?'#849e99':'#152e34'}/><stop offset="1" stopColor={clear?'#e1c39b':'#4b6866'}/></linearGradient>
+ <linearGradient id="wood" x2="0" y2="1"><stop stopColor="#6e4935"/><stop offset="1" stopColor="#2b231e"/></linearGradient>
+ <radialGradient id="glow"><stop stopColor="#ffdc94" stopOpacity=".45"/><stop offset="1" stopColor="#ffdc94" stopOpacity="0"/></radialGradient>
+ <pattern id="grain" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="1" cy="2" r=".6" fill="#ead9b1" opacity=".09"/></pattern>
+</defs>
+<path fill="url(#wall)" d="M0 0h1440v1000H0z"/>
+<path d="M85 0h870v686H85z" fill="#171e1a"/><path d="M105 0h830v660H105z" fill="url(#night)"/>
+<g opacity=".5" fill="#263d3d"><path d="M110 270h180v390H110zM310 210h160v450H310zM500 320h180v340H500zM710 180h210v480H710z"/></g>
+<g fill="#e7c58c" opacity=".3">{Array.from({length:24},(_,i)=><rect key={i} x={135+(i%8)*105} y={340+Math.floor(i/8)*84} width="18" height="28" rx="2"/>)}</g>
+<path d="M210 660V270q0-30 25-30h35" fill="none" stroke="#15292a" strokeWidth="9"/><ellipse cx="275" cy="260" rx="90" ry="140" fill="url(#glow)"/><path d="M250 245h50l-10-15h-28z" fill="#f2d49d"/>
+<g className="rain-lines" stroke="#bdcfcb" strokeWidth="1" opacity=".25">{Array.from({length:60},(_,i)=><path key={i} d={`M${115+(i*79)%800} ${-100+(i*137)%700}l-18 90`}/>)}</g>
+<path d="M100 0h13v670h-13zM510 0h18v670h-18zM922 0h16v670h-16zM100 180h838v14H100zM100 480h838v14H100z" fill="#28392f"/><path d="M60 668h920v27H60z" fill="#82684b"/><path d="M80 695h885v18H80z" fill="#151e18"/>
+<path d="M995 0h445v1000H995z" fill="#28362b"/><path d="M1000 0h9v1000h-9z" fill="#82704c" opacity=".35"/>
+<g transform="translate(1090 260)"><rect width="235" height="190" fill="#131e19" stroke="#846e4d" strokeWidth="7"/><path d="M30 150l60-80 40 55 30-35 50 60" fill="#5c6e55"/><circle cx="170" cy="45" r="17" fill="#b4aa75"/><text x="118" y="176" textAnchor="middle" fill="#a7a78c" fontSize="10" letterSpacing="4">SOMEWHERE, SOMEDAY</text></g>
+<path d="M1180 0v128" stroke="#161f19" strokeWidth="6"/><ellipse cx="1180" cy="250" rx="250" ry="240" fill="url(#glow)"/><path d="M1090 165q90-115 180 0z" fill="#d5a665"/><ellipse cx="1180" cy="166" rx="90" ry="12" fill="#ffdf9e"/>
+<g transform="translate(80 640)"><path d="M0 0q-30-100-5-150Q40-110 0 0M0 0q50-160 95-145Q85-55 0 0M0 0q-90-80-90-140Q-20-120 0 0" fill="#4c6550"/><path d="M-40 0h80l-12 95h-56z" fill="#a17d56"/></g>
+<path d="M0 825Q720 750 1440 825v175H0z" fill="url(#wood)"/><path d="M0 836Q720 766 1440 836" fill="none" stroke="#ae8050" strokeWidth="3" opacity=".5"/>
+<g transform="translate(1070 785)"><ellipse rx="82" ry="21" fill="#201e18" opacity=".6"/><ellipse rx="67" ry="16" fill="#baa98b"/><path d="M-40-59h80v48q-40 37-80 0z" fill="#d4c5a4"/><path d="M40-50q45-8 34 23-8 15-34 12" fill="none" stroke="#c7b794" strokeWidth="10"/><ellipse cy="-59" rx="40" ry="9" fill="#554032"/><path className="steam" d="M-10-80q-20-22 0-43m25 43q-20-22 0-43" fill="none" stroke="#ded7b7" strokeWidth="2" opacity=".35"/></g>
+<path fill="url(#grain)" d="M0 0h1440v1000H0z"/>
+</svg>
+<svg className={`mira ${state} ${emotion} action-${action}`} viewBox="0 0 600 850" role="img" aria-label="Mira，穿琥珀色雨衣、戴银色星星发夹的成年旅行摄影师">
+<defs><linearGradient id="coat" x2="1" y2="1"><stop stopColor="#d3a454"/><stop offset=".5" stopColor="#b57b32"/><stop offset="1" stopColor="#745128"/></linearGradient><linearGradient id="skin" x2="1" y2=".8"><stop stopColor="#f0d0ae"/><stop offset="1" stopColor="#c98e72"/></linearGradient><linearGradient id="hair" x2="1" y2="1"><stop stopColor="#49342e"/><stop offset="1" stopColor="#211f20"/></linearGradient></defs>
+<ellipse cx="308" cy="815" rx="245" ry="27" fill="#0a1513" opacity=".4"/>
+<g className="body"><path d="M202 350Q98 364 78 477L48 817h503l-39-347q-21-102-118-119z" fill="url(#coat)" stroke="#79542f" strokeWidth="3"/><path d="M230 345l-22 130 92 51 94-54-21-127" fill="#493f33"/><path d="M247 289l-6 80q56 55 113 0l-8-80" fill="url(#skin)"/><path d="M233 345l-54 33 34 143 73-73zM365 343l61 40-41 138-72-73z" fill="#d3a45d" stroke="#8e6535" strokeWidth="2"/><path d="M300 451v366" stroke="#634d34" strokeWidth="4"/><path d="M319 471v346M121 486l-21 278M465 488l33 272" stroke="#e6bd73" opacity=".4" fill="none" strokeWidth="2"/><path d="M357 594h99v115h-99z" fill="#ae7936" stroke="#835c32" strokeWidth="3"/><path d="M355 594h103v25H355z" fill="#c39249"/>
+<path d="M179 382l245 435" stroke="#382f27" strokeWidth="23"/><path d="M179 382l245 435" stroke="#71604a" strokeWidth="3"/>
+<g className="arm"><path d="M112 480q-58 95-20 193 62 63 171 5l-20-63-90-7 18-86" fill="url(#coat)" stroke="#946633" strokeWidth="3"/><path d="M243 618q41-34 73-19l35 17q12 17-7 23l-39-3q-14 29-54 35z" fill="url(#skin)"/><path d="M260 621l39 6m-30 5 25 6" stroke="#b77d63" fill="none" strokeWidth="2"/></g>
+<g transform="translate(337 708) rotate(8)"><rect width="119" height="83" rx="10" fill="#2b302c" stroke="#a59d80" strokeWidth="3"/><path d="M15 0v-12h35V0" fill="#4c5043"/><circle cx="63" cy="42" r="33" fill="#707565"/><circle cx="63" cy="42" r="25" fill="#182e30"/><circle cx="63" cy="42" r="15" fill="#29464a"/><circle cx="55" cy="33" r="6" fill="#8daca4" opacity=".6"/><rect x="90" y="12" width="17" height="9" fill="#ccc6a9"/></g></g>
+<g className="head"><path d="M170 232q-8-151 130-151 139 4 139 151l-6 153q-52 40-95-4l-115 13-57-30z" fill="url(#hair)"/><ellipse cx="198" cy="251" rx="18" ry="30" fill="#cf9b7c"/><ellipse cx="401" cy="251" rx="17" ry="30" fill="#c18c70"/><path d="M204 180q86-87 190 5l-5 93q-8 67-86 91-70-18-94-83z" fill="url(#skin)"/><path d="M186 230q-8-134 118-125 94 0 111 124-72-18-113-83-26 66-116 84" fill="url(#hair)"/><path d="M204 182q-28 80 9 154-55-20-47-102M386 178q53 100 8 183 48-20 44-119" fill="#302724"/><path d="M215 150q31-41 82-38M338 119q40 19 55 63" fill="none" stroke="#795345" strokeWidth="4" opacity=".5"/>
+<g className="brows" stroke="#684639" strokeWidth="5" fill="none" strokeLinecap="round"><path d={emotion==='worried'?'M230 238q20-2 38-14M331 224q20 12 37 14':'M230 232q20-10 38-2M331 230q20-8 37 3'}/></g>
+<g className="eyes"><path d="M226 251q23-20 46 0-23 15-46 0M328 251q23-20 46 0-23 15-46 0" fill="#eee0c9"/><ellipse cx="251" cy="250" rx="9" ry="11" fill="#574d35"/><ellipse cx="350" cy="250" rx="9" ry="11" fill="#574d35"/><ellipse cx="252" cy="250" rx="4" ry="8" fill="#272c26"/><ellipse cx="351" cy="250" rx="4" ry="8" fill="#272c26"/><circle cx="254" cy="246" r="2.5" fill="#fff2d2"/><circle cx="353" cy="246" r="2.5" fill="#fff2d2"/><path d="M226 251q23-20 46 0M328 251q23-20 46 0" stroke="#574034" strokeWidth="3" fill="none"/></g>
+<path d="M299 250l-6 33q7 7 17 0" fill="none" stroke="#b98166" strokeWidth="2"/><ellipse cx="241" cy="284" rx="19" ry="9" fill="#bd795f" opacity=".19"/><ellipse cx="357" cy="284" rx="19" ry="9" fill="#bd795f" opacity=".19"/>
+<path className="mouth" d={emotion==='worried'?'M280 316q20-12 40 0-20-4-40 0':'M278 311q22 13 44-1-22 3-44 1'} fill="#a66858" stroke="#995d50" strokeWidth="2"/><path className="smile" d="M278 307q22 30 44 0-22 9-44 0" fill="#a35e51"/><path d="M285 312q15 4 30 0" stroke="#edcbb0" strokeWidth="4" className="smile"/>
+<path d="M393 170l5 10 12 1-9 8 3 12-11-6-10 6 2-12-9-8 12-1z" fill="#dfded0" stroke="#9baca4" strokeWidth="2"/><circle cx="399" cy="286" r="5" fill="#c8be96"/>
+</g></svg>
+{action==='photo' && <div className="polaroid"><svg viewBox="0 0 240 180"><defs><linearGradient id="sea" x2="0" y2="1"><stop stopColor="#a9c5be"/><stop offset="1" stopColor="#345f63"/></linearGradient></defs><path d="M0 0h240v180H0z" fill="url(#sea)"/><circle cx="66" cy="50" r="25" fill="#e9c88b"/><path d="M0 118q60-18 120 0t120 0M0 143q60-18 120 0t120 0" fill="none" stroke="#d0d3b4" opacity=".5"/><path d="M132 180l42-49 66 9v40" fill="#2e4945"/><path d="M177 139l7-89h18l8 89" fill="#efe1bf"/><path d="M181 74h24v13h-24M179 105h28v12h-28" fill="#b67458"/><path d="M178 50h30l-15-14z" fill="#344b46"/><path d="M187 53h12v13h-12z" fill="#ffe5a0"/></svg><span>海的另一边，也有光。</span><small>MIRA'S JOURNAL · 034</small></div>}
+<div className="vignette"/>
+</div>;
+}

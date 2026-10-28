@@ -1,0 +1,28 @@
+const {chromium}=require('../frontend/node_modules/playwright');
+const assert=require('node:assert/strict');const fs=require('node:fs');
+const out=require('node:path').join(__dirname,'../verification');fs.mkdirSync(out,{recursive:true});
+(async()=>{
+ const browser=await chromium.launch({...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{}),headless:true,args:['--use-fake-device-for-media-stream','--use-fake-ui-for-media-stream','--autoplay-policy=no-user-gesture-required']});
+ const context=await browser.newContext({viewport:{width:1440,height:1000},permissions:['microphone']});
+ const page=await context.newPage();const errors=[],checks=[];
+ page.on('pageerror',e=>errors.push(e.message));
+ await page.addInitScript(()=>{window.testAudio=[];const Native=window.Audio;window.Audio=class extends Native{constructor(src){super(src);window.testAudio.push(this);}};window.testSockets=[];const WS=window.WebSocket;window.WebSocket=class extends WS{constructor(...args){super(...args);window.testSockets.push(this);}};});
+ const check=(name)=>{checks.push(name);console.log('PASS',name)};
+ await page.goto(process.env.APP_URL||'http://127.0.0.1:8080');await page.getByText('离线剧情 · MOCK').waitFor();
+ await page.screenshot({path:out+'/desktop.png',fullPage:true});
+ await page.getByRole('button',{name:'坐一会儿'}).click();await page.waitForFunction(()=>window.testAudio.some(a=>!a.paused&&a.currentTime>0.1));check('Local Chinese WAV plays through real HTMLAudioElement');
+ await page.getByRole('button',{name:'你在等谁？',exact:true}).click();
+ assert.equal(await page.evaluate(()=>window.testAudio[0].paused),true);await page.locator('.mira.worried').waitFor();check('Text interruption stops old audio and changes expression');
+ await page.getByRole('button',{name:'可以看看你的照片吗？',exact:true}).click();await page.locator('.polaroid').waitFor();check('Photo action displays local illustrated postcard');
+ await page.screenshot({path:out+'/photo.png',fullPage:true});
+ await page.getByRole('button',{name:'我陪你等雨停。',exact:true}).click();await page.locator('.world.clear').waitFor();check('Dialogue triggers environment change');
+ await page.evaluate(()=>window.testSockets.at(-1).dispatchEvent(new MessageEvent('message',{data:JSON.stringify({type:'segment',turnId:1,index:99,text:'STALE RESPONSE',emotion:'worried',action:'photo',scene:'rain',audioUrl:'/audio/hello.wav'})})));
+ await page.waitForTimeout(100);assert.equal(await page.locator('.polaroid').count(),0);assert.equal(await page.locator('.world.clear').count(),1);check('Injected late turn cannot restore stale captions, audio or scene');
+ await page.getByRole('button',{name:'体验设置'}).click();await page.locator('select').selectOption('timeout');await page.getByRole('button',{name:'关闭设置'}).click();await page.getByRole('button',{name:'你在等谁？',exact:true}).click();await page.getByText('等待超时，请重试或换个话题。').waitFor();check('Timeout surfaces recoverable feedback');
+ await page.getByRole('button',{name:'体验设置'}).click();await page.locator('select').selectOption('media');await page.getByRole('button',{name:'关闭设置'}).click();await page.getByRole('button',{name:'可以看看你的照片吗？',exact:true}).click();await page.locator('.world.static').waitFor();await page.getByText('模拟媒体加载失败：已切换字幕与静态角色。').waitFor();check('Media failure preserves captions and static character');
+ await page.getByRole('button',{name:'体验设置'}).click();await page.locator('select').selectOption('');await page.getByRole('button',{name:'关闭设置'}).click();await page.getByRole('button',{name:'你在等谁？',exact:true}).click();await page.locator('.mira.worried').waitFor();check('Next turn recovers after timeout and media failure');
+ await page.setViewportSize({width:390,height:844});await page.screenshot({path:out+'/mobile.png',fullPage:true});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);check('390px mobile layout has no horizontal overflow');
+ await page.evaluate(()=>{Object.defineProperty(navigator.mediaDevices,'getUserMedia',{configurable:true,value:()=>Promise.reject(new DOMException('Denied','NotAllowedError'))});});await page.getByRole('button',{name:'开始连续对话',exact:true}).click();await page.getByText('无法使用麦克风或加载语音检测，请检查权限和连接，或直接输入文字。').waitFor();check('Denied microphone preserves text fallback');
+ await page.evaluate(()=>window.testSockets.at(-1).close());await page.getByRole('button',{name:'重新连接'}).click();await page.getByText('离线剧情 · MOCK').waitFor();check('Disconnected session reconnects');
+ assert.deepEqual(errors,[]);fs.writeFileSync(out+'/browser-tests.json',JSON.stringify({date:new Date().toISOString(),browser:'Chrome headless',microphone:'synthetic device',checks,errors},null,2));await browser.close();
+})().catch(e=>{console.error(e);process.exit(1)});

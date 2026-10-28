@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-28T07:57:54.451Z",
+  "browser": "Chrome headless",
+  "microphone": "synthetic device",
+  "checks": [
+    "Local Chinese WAV plays through real HTMLAudioElement",
+    "Text interruption stops old audio and changes expression",
+    "Photo action displays local illustrated postcard",
+    "Dialogue triggers environment change",
+    "Injected late turn cannot restore stale captions, audio or scene",
+    "Timeout surfaces recoverable feedback",
+    "Media failure preserves captions and static character",
+    "Next turn recovers after timeout and media failure",
+    "390px mobile layout has no horizontal overflow",
+    "Denied microphone preserves text fallback",
+    "Disconnected session reconnects"
+  ],
+  "errors": []
+}

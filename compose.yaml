@@ -1,0 +1,16 @@
+services:
+  cafe:
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      APP_MODE: ${APP_MODE:-mock}
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-}
+      CHAT_MODEL: ${CHAT_MODEL:-qwen-plus}
+      ASR_MODEL: ${ASR_MODEL:-paraformer-realtime-v2}
+      TTS_MODEL: ${TTS_MODEL:-cosyvoice-v2}
+      TTS_VOICE: ${TTS_VOICE:-longxiaochun_v2}
+      DASHSCOPE_CHAT_URL: ${DASHSCOPE_CHAT_URL:-https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions}
+      DASHSCOPE_AUDIO_URL: ${DASHSCOPE_AUDIO_URL:-wss://dashscope.aliyuncs.com/api-ws/v1/inference}
+    restart: unless-stopped
+    mem_limit: 768m
